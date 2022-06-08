@@ -39,6 +39,7 @@
         function sendMessage() {
             var sender = $("#sender").val(); // Кладем текст из поля "sender" в переменную
             var text = $("#text").val();
+            $.get("/send_msg", { "sender" : sender, "text" : text});
 
             $("#text").val("");
         }
