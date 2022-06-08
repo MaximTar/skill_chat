@@ -39,7 +39,14 @@
         function sendMessage() {
             var sender = $("#sender").val(); // Кладем текст из поля "sender" в переменную
             var text = $("#text").val();
-            $.get("/send_msg", { "sender" : sender, "text" : text});
+            $.get("/send_msg", { "sender" : sender, "text" : text},
+                (data) => {
+                    var status = data["status"];
+                    if (status == "Error") {
+                        var status_text = data["text"];
+                        alert("Error!\n" + status_text);
+                    }
+                });
 
             $("#text").val("");
         }
@@ -51,6 +58,7 @@
                 // При нажатии Enter, вызвать функцию sendMessage
                 if (event.keyCode == 13) {
                     sendMessage();
+                    console.log($( this ));
                 }
            });
 

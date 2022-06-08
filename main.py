@@ -11,7 +11,7 @@ test_msg = {'text': "Welcome to skill chat!",
             'time': datetime.now().strftime("%H:%M")}
 
 DB_FILE = "data/db.json"
-MAX_MSG_LEN = 10
+MAX_MSG_LEN = 3000
 
 
 def load_msgs():
@@ -74,21 +74,21 @@ def send_msg():
     sender = request.args["sender"]
 
     if len(sender) < 3 or len(sender) > 100 or len(text) < 1:
-        return "Error"
+        return {"status": "Error", "text": "Too short message or wrong name!"}
 
     elif len(text) > MAX_MSG_LEN:
         split_text = textwrap.wrap(text, MAX_MSG_LEN, break_long_words=False)
 
         if len(split_text[0]) > MAX_MSG_LEN:
-            return "Error"
+            return {"status": "Error", "text": "Too long message!"}
 
         for new_text in split_text:
             add_msg(new_text, sender)
-        return "Ok"
+        return {"status": "Ok", "text": ""}
 
     else:
         add_msg(text, sender)
-        return "Ok"
+        return {"status": "Ok", "text": ""}
 
 
 @app.route("/chat")
